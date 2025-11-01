@@ -1,5 +1,5 @@
 import { Router, Request, Response } from 'express';
-import { renderTemplate } from '../services/renderer.js';
+import { renderTemplate, getAssets } from '../services/renderer.js';
 import { htmlToPdf } from '../services/gotenberg.js';
 import { formatDateParis, formatYMD } from '../utils/formatters.js';
 import { paginateOrderLines } from '../utils/pagination.js';
@@ -70,8 +70,11 @@ router.post('/', async (req: Request, res: Response) => {
     // Render HTML with all pages
     const html = await renderTemplate('avis.html', { pages: allPages });
     
+    // Get assets (logo)
+    const assets = await getAssets();
+    
     // Generate PDF
-    const pdfBuffer = await htmlToPdf(html);
+    const pdfBuffer = await htmlToPdf(html, assets);
     
     const duration = Date.now() - startTime;
     logger.info(`Batch PDF generated successfully`, {
