@@ -1,6 +1,7 @@
 import { format, parseISO } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
-import { fr } from 'date-fns/locale';
+// @ts-ignore
+import fr from 'date-fns/locale/fr/index.js';
 
 const TIMEZONE = 'Europe/Paris';
 
