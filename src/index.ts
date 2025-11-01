@@ -43,6 +43,42 @@ app.use((req, _res, next) => {
   next();
 });
 
+// Root endpoint - API information
+app.get('/', (_req, res) => {
+  res.json({
+    name: 'L\'ami du Pain PDF API',
+    version: '1.0.0',
+    status: 'running',
+    endpoints: {
+      health: {
+        method: 'GET',
+        path: '/health',
+        description: 'Health check endpoint'
+      },
+      pdfAvis: {
+        method: 'POST',
+        path: '/api/pdf/avis',
+        description: 'Generate Bon de livraison PDF',
+        auth: 'Bearer token required'
+      },
+      pdfSummary: {
+        method: 'POST',
+        path: '/api/pdf/summary',
+        description: 'Generate Feuille de synthèse PDF',
+        auth: 'Bearer token required'
+      }
+    },
+    documentation: {
+      github: 'https://github.com/Tsumibito/l-ami-du-pain-Gotenberg',
+      examples: {
+        avis: '/examples/avis-example.json',
+        summary: '/examples/summary-example.json'
+      }
+    },
+    timestamp: new Date().toISOString()
+  });
+});
+
 // Health check endpoint (no auth required)
 app.get('/health', async (_req, res) => {
   try {
