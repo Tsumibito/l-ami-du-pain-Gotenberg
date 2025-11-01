@@ -27,13 +27,23 @@ export function paginateOrderLines(
   });
   
   // Other pages
+  let pageNumber = 2;
   while (remainingLines.length > 0) {
     const pageLines = remainingLines.splice(0, otherPagesLimit);
     pages.push({
       first_page: false,
+      page_number: pageNumber,
+      total_pages: Math.ceil((lines.length - firstPageLimit) / otherPagesLimit) + 1,
       lines: pageLines
     });
+    pageNumber++;
   }
+  
+  // Update total_pages for all pages
+  const totalPages = pages.length;
+  pages.forEach(page => {
+    page.total_pages = totalPages;
+  });
   
   return pages;
 }

@@ -2,6 +2,7 @@ import Mustache from 'mustache';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
+import { LOGO_BASE64 } from '../utils/logo.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,7 +41,12 @@ export async function renderTemplate(
   data: any
 ): Promise<string> {
   const template = await loadTemplate(templateName);
-  return Mustache.render(template, data);
+  // Add logo to data
+  const renderData = {
+    ...data,
+    logo_base64: LOGO_BASE64
+  };
+  return Mustache.render(template, renderData);
 }
 
 /**

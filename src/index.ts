@@ -4,6 +4,7 @@ import rateLimit from 'express-rate-limit';
 import dotenv from 'dotenv';
 import { authMiddleware } from './middleware/auth.js';
 import avisRouter from './routes/avis.js';
+import avisBatchRouter from './routes/avis-batch.js';
 import summaryRouter from './routes/summary.js';
 import { logger } from './utils/logger.js';
 import { checkGotenbergHealth } from './services/gotenberg.js';
@@ -61,6 +62,12 @@ app.get('/', (_req, res) => {
         description: 'Generate Bon de livraison PDF',
         auth: 'Bearer token required'
       },
+      pdfAvisBatch: {
+        method: 'POST',
+        path: '/api/pdf/avis-batch',
+        description: 'Generate batch PDF from multiple Bons de livraison',
+        auth: 'Bearer token required'
+      },
       pdfSummary: {
         method: 'POST',
         path: '/api/pdf/summary',
@@ -109,6 +116,7 @@ app.get('/health', async (_req, res) => {
 
 // PDF generation routes (with auth)
 app.use('/api/pdf/avis', authMiddleware, avisRouter);
+app.use('/api/pdf/avis-batch', authMiddleware, avisBatchRouter);
 app.use('/api/pdf/summary', authMiddleware, summaryRouter);
 
 // 404 handler

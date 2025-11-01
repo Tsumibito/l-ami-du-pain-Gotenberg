@@ -25,6 +25,10 @@
     .order-title { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 16px; }
     .doc-title { font-size: 20px; font-weight: 800; letter-spacing: 0.2px; }
     .order-sub { font-size: 12px; color: #6b7280; font-weight: 600; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 2px solid #e5e7eb; margin-bottom: 16px; }
+    .page-info { font-size: 14px; font-weight: 600; }
+    .page-client { font-size: 13px; color: #6b7280; }
+    .page-num { font-size: 12px; color: #6b7280; font-weight: 500; }
     .sep { margin: 0 6px; }
     .order-date { color: #6b7280; font-size: 14px; font-weight: 500; }
     .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin-top: 16px; }
@@ -55,7 +59,7 @@
 <section class="page">
   <header class="header">
     <div class="brand">
-      <img src="/ladp_logo.svg" alt="L'ami du Pain" class="logo"/>
+      <img src="{{logo_base64}}" alt="L'ami du Pain" class="logo"/>
       <div class="tagline">Votre boulanger fiable à La Rochelle et alentours</div>
       <div class="company">
         <div class="title">SARL L'AMI DU PAIN</div>
@@ -87,10 +91,22 @@
     </div>
   </header>
 
+  {{#first_page}}
   <div class="order-title">
     <div class="doc-title">Bon de livraison</div>
     <div class="order-sub"><span class="order-no">Commande #{{order.numero}}</span><span class="sep"> · </span><span class="order-date">du {{order.date_created_formatted}}</span></div>
   </div>
+  {{/first_page}}
+
+  {{^first_page}}
+  <div class="page-header">
+    <div>
+      <div class="page-info">Bon de livraison — Commande #{{order.numero}}</div>
+      <div class="page-client">{{order.client.nom}}</div>
+    </div>
+    <div class="page-num">Page {{page_number}} / {{total_pages}}</div>
+  </div>
+  {{/first_page}}
 
   {{#first_page}}
   <section class="grid">
@@ -114,10 +130,6 @@
       <div class="value">{{order.demandes_speciales}}</div>
     </div>
     {{/order.demandes_speciales}}
-    <div class="grid-item">
-      <div class="label">Instructions de livraison</div>
-      <div class="value">{{#order.commentaire_client}}{{order.commentaire_client}}{{/order.commentaire_client}}{{^order.commentaire_client}}—{{/order.commentaire_client}}</div>
-    </div>
   </section>
   {{/first_page}}
 
