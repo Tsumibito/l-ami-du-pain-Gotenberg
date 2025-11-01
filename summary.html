@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <title>Feuille de synthèse — {{meta.date_formatted}}</title>
+  <style>
+    @page { size: A4; margin: 12mm; }
+    html, body { height: 100%; margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial; color: #111827; }
+    .doc { display: block; filter: grayscale(100%); }
+    .page { display: block; }
+    .header { display: flex; align-items: flex-start; gap: 16px; padding-bottom: 10px; border-bottom: 2px solid #e5e7eb; }
+    .logo { width: 260px; max-width: 60%; max-height: 110px; height: auto; object-fit: contain; }
+    .h-title { display: flex; flex-direction: column; }
+    .t1 { font-size: 22px; font-weight: 800; }
+    .t2 { margin-top: 3px; font-size: 13px; color: #374151; font-weight: 600; }
+    .t3 { margin-top: 2px; font-size: 13px; color: #111827; font-weight: 600; }
+    .cols { column-count: 2; column-gap: 20px; column-fill: auto; margin-top: 12px; }
+    .card { display: block; width: 100%; max-width: 100%; box-sizing: border-box; border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px 16px 8px 10px; margin: 0 0 12px; break-inside: avoid; -webkit-column-break-inside: avoid; page-break-inside: avoid; overflow: hidden; background: #fff; }
+    .c-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
+    .c-left { flex: 1 1 auto; min-width: 0; }
+    .c-name { font-weight: 700; font-size: 13px; word-break: break-word; overflow-wrap: anywhere; }
+    .c-cheque { margin-top: 2px; font-size: 10px; color: #374151; display: flex; align-items: center; gap: 6px; }
+    .c-meta { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 2px; }
+    .badge { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; padding: 2px 6px; border-radius: 999px; }
+    .badge-yellow { background: #FEF9C3; color: #92400E; }
+    .chk { display: inline-block; width: 16px; height: 16px; border: 2px solid #111; border-radius: 3px; vertical-align: -2px; position: relative; }
+    .chk.on::after { content: '✓'; color: #111; font-size: 14px; position: absolute; left: 1px; top: -5px; }
+    .chk-sm { width: 14px; height: 14px; }
+    .chk-sm.on::after { font-size: 12px; left: 1px; top: -4px; }
+    .c-no { font-size: 9px; color: #6b7280; flex-shrink: 0; white-space: nowrap; }
+    .lines { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 6px; table-layout: fixed; }
+    .lines td { font-size: 11px; padding: 4px 0; word-break: break-word; overflow-wrap: anywhere; }
+    .lines td:first-child { width: auto; }
+    .lines .qty { text-align: right; font-weight: 700; white-space: nowrap; padding-left: 6px; }
+    .lines col.col-qty { width: 44px; }
+    .lines col.col-desc { width: auto; }
+  </style>
+</head>
+<body>
+<div class="doc">
+<section class="page">
+  <header class="header">
+    <img src="/ladp_logo.svg" alt="L'ami du Pain" class="logo"/>
+    <div class="h-title">
+      <div class="t1">Feuille de synthèse</div>
+      <div class="t2">{{meta.date_formatted}}</div>
+      <div class="t3">{{tour.type.nom}}{{#tour.type.description}} ({{tour.type.description}}){{/tour.type.description}}</div>
+    </div>
+  </header>
+
+  <div class="cols">
+    {{#orders}}
+    <div class="card">
+      <div class="c-head">
+        <div class="c-left">
+          <div class="c-name">{{client_nom}}</div>
+          {{#besoin_de_cheque}}<div class="c-cheque"><span>Besoin de chèque</span><span class="chk chk-sm on"></span></div>{{/besoin_de_cheque}}
+          {{#demandes_speciales}}<div class="c-meta"><span class="badge badge-yellow">Demande spéciale: {{demandes_speciales}}</span></div>{{/demandes_speciales}}
+        </div>
+        <div class="c-no">#{{numero}}</div>
+      </div>
+      <table class="lines"><colgroup><col class="col-desc"/><col class="col-qty"/></colgroup><tbody>
+        {{#lignes}}
+        <tr><td>{{produit_nom}}</td><td class="qty">× {{quantite}}{{#tranche}} <span>tr.</span>{{/tranche}}</td></tr>
+        {{/lignes}}
+      </tbody></table>
+    </div>
+    {{/orders}}
+  </div>
+</section>
+</div>
+</body>
+</html>

@@ -1,0 +1,71 @@
+version: '3.8'
+
+services:
+  # PDF API сервис
+  pdf-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ladp-pdf-api
+    ports:
+      - "${PORT:-3001}:3001"
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=${NODE_ENV:-production}
+      - PORT=3001
+      - DIRECTUS_URL=${DIRECTUS_URL}
+      - DIRECTUS_TOKEN=${DIRECTUS_TOKEN}
+      - GOTENBERG_URL=http://gotenberg:3000
+      - CORS_ORIGIN=${CORS_ORIGIN}
+    depends_on:
+      gotenberg:
+        condition: service_healthy
+    networks:
+      - l-ami-du-pain-directus_default
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Монтируем шаблоны для hot-reload в development
+      - ./templates:/app/templates:ro
+    labels:
+      - "traefik.enable=false"
+
+  # Gotenberg сервис для конвертации HTML → PDF
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: ladp-gotenberg
+    networks:
+      - l-ami-du-pain-directus_default
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--api-timeout=30s"
+      - "--api-port=3000"
+      - "--chromium-disable-javascript=false"
+      - "--chromium-allow-list=.*"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    # Лимиты ресурсов для предотвращения перегрузки
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+
+# Используем существующую сеть Directus
+networks:
+  l-ami-du-pain-directus_default:
+    external: true

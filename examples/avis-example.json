@@ -1,0 +1,74 @@
+{
+  "company": {
+    "name": "SARL L'AMI DU PAIN",
+    "address": "6 RUE DE LA ROCHELLE\n17220 SAINT-ROGATIEN",
+    "siret": "517 503 298 00047",
+    "phone": "+33 5 46 00 00 00",
+    "email": "contact@ladp.fr"
+  },
+  "order": {
+    "id": 123,
+    "numero": "CMD-2025-001",
+    "date_created": "2025-10-31T08:30:00Z",
+    "date_livraison": "2025-11-01",
+    "besoin_de_cheque": true,
+    "commentaire_client": "Livraison par l'entrée arrière",
+    "demandes_speciales": "Pains bien cuits",
+    "type": {
+      "nom": "Tour Matin",
+      "description": "Livraison matinale 6h-8h"
+    },
+    "client": {
+      "nom": "Boulangerie Martin",
+      "telephone": "+33 5 46 11 22 33",
+      "site": "www.boulangerie-martin.fr"
+    },
+    "client_adresse": {
+      "numero_et_nom_de_la_rue": "15 rue du Commerce",
+      "complement_d_adresse": "Bâtiment B",
+      "code_postal": "17000",
+      "ville": "La Rochelle",
+      "pays": "France"
+    },
+    "juridique": {
+      "raison_sociale": "SARL Boulangerie Martin",
+      "forme_juridique": "SARL",
+      "siren": "123456789",
+      "siret": "12345678900012",
+      "code_naf": "1071C",
+      "tva_intracom": "FR12345678900"
+    }
+  },
+  "lignes": [
+    {
+      "num": 1,
+      "produit_nom": "Pain de campagne 400g",
+      "quantite": 20,
+      "tranche": false
+    },
+    {
+      "num": 2,
+      "produit_nom": "Baguette tradition",
+      "quantite": 50,
+      "tranche": false
+    },
+    {
+      "num": 3,
+      "produit_nom": "Pain de mie complet",
+      "quantite": 10,
+      "tranche": true
+    },
+    {
+      "num": 4,
+      "produit_nom": "Pain aux céréales",
+      "quantite": 15,
+      "tranche": false
+    },
+    {
+      "num": 5,
+      "produit_nom": "Croissant",
+      "quantite": 30,
+      "tranche": false
+    }
+  ]
+}

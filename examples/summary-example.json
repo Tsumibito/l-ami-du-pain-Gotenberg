@@ -1,0 +1,69 @@
+{
+  "meta": {
+    "date": "2025-11-01",
+    "date_formatted": "vendredi 1 novembre 2025"
+  },
+  "tour": {
+    "type": {
+      "nom": "Tour Matin",
+      "description": "Livraison matinale 6h-8h"
+    }
+  },
+  "orders": [
+    {
+      "client_nom": "Boulangerie Martin",
+      "numero": "CMD-2025-001",
+      "besoin_de_cheque": true,
+      "demandes_speciales": "Pains bien cuits",
+      "lignes": [
+        {
+          "produit_nom": "Pain de campagne 400g",
+          "quantite": 20,
+          "tranche": false
+        },
+        {
+          "produit_nom": "Baguette tradition",
+          "quantite": 50,
+          "tranche": false
+        }
+      ]
+    },
+    {
+      "client_nom": "Restaurant Le Gourmet",
+      "numero": "CMD-2025-002",
+      "besoin_de_cheque": false,
+      "demandes_speciales": null,
+      "lignes": [
+        {
+          "produit_nom": "Pain de mie complet",
+          "quantite": 10,
+          "tranche": true
+        },
+        {
+          "produit_nom": "Croissant",
+          "quantite": 25,
+          "tranche": false
+        }
+      ]
+    },
+    {
+      "client_nom": "Café du Centre",
+      "numero": "CMD-2025-003",
+      "besoin_de_cheque": false,
+      "demandes_speciales": null,
+      "lignes": [
+        {
+          "produit_nom": "Baguette tradition",
+          "quantite": 30,
+          "tranche": false
+        },
+        {
+          "produit_nom": "Pain aux noix",
+          "quantite": 5,
+          "tranche": false
+        }
+      ]
+    }
+  ],
+  "sort_mode": "alpha"
+}

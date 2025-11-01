@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <title>Bon de livraison — {{order.numero}}</title>
+  <style>
+    @page { size: A4; margin: 14mm; }
+    html, body { height: 100%; margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial; color: #111827; }
+    .doc { display: block; filter: grayscale(100%); }
+    .page { display: block; }
+    .header { display: flex; align-items: flex-start; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; }
+    .logo { width: 260px; max-width: 60%; max-height: 110px; height: auto; object-fit: contain; }
+    .brand { flex: 1; min-width: 0; }
+    .brand .tagline { margin-top: 6px; color: #6b7280; font-size: 10px; }
+    .company { margin-top: 10px; font-size: 11px; }
+    .company .title { font-weight: 700; font-size: 13px; }
+    .company .addr { margin-top: 2px; white-space: pre-line; }
+    .company .meta { margin-top: 2px; }
+    .company .label { color: #6b7280; margin-right: 6px; }
+    .client { flex: 0 0 40%; min-width: 40%; border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; }
+    .client-title { font-weight: 700; margin-bottom: 6px; }
+    .client-name { font-weight: 600; }
+    .client-addr, .client-meta { margin-top: 4px; }
+    .client .label { color: #6b7280; margin-right: 6px; }
+    .order-title { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; margin-top: 16px; }
+    .doc-title { font-size: 20px; font-weight: 800; letter-spacing: 0.2px; }
+    .order-sub { font-size: 12px; color: #6b7280; font-weight: 600; }
+    .sep { margin: 0 6px; }
+    .order-date { color: #6b7280; font-size: 14px; font-weight: 500; }
+    .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 16px; margin-top: 16px; }
+    .grid-item { border: 1px solid #e5e7eb; border-radius: 8px; padding: 10px 12px; min-height: 44px; }
+    .grid .label { color: #6b7280; font-size: 10px; margin-bottom: 4px; }
+    .grid .value { font-size: 12px; white-space: pre-wrap; word-break: break-word; }
+    .chk { display: inline-block; width: 20px; height: 20px; border: 2px solid #111; border-radius: 3px; vertical-align: -2px; margin-right: 8px; position: relative; }
+    .chk.on::after { content: '✓'; color: #111; font-size: 18px; position: absolute; left: 2px; top: -4px; }
+    .table-title { font-weight: 700; margin-bottom: 6px; margin-top: 16px; }
+    .lines { width: 100%; border-collapse: collapse; table-layout: fixed; }
+    .lines thead th { text-align: left; font-size: 11px; color: #6b7280; font-weight: 600; border-bottom: 1.5px solid #e5e7eb; padding: 6px; }
+    .lines tbody td { padding: 7px 6px; border-bottom: 1px solid #e5e7eb; font-size: 12px; }
+    .lines tbody tr:nth-child(even) { background: #fafafa; }
+    .lines .col-num { width: 8%; }
+    .lines .col-art { width: 58%; }
+    .lines .col-qty { width: 24%; }
+    .lines .col-cut { width: 10%; }
+    .lines .empty { text-align: center; color: #6b7280; }
+    .footer { margin-top: 18px; font-size: 10px; color: #6b7280; text-align: center; }
+    .footer .thanks { color: #111827; font-weight: 700; margin-bottom: 6px; font-size: 13px; margin-top: 16px; }
+    .footer .consigne { margin-bottom: 6px; font-size: 12px; }
+    @media print { .lines tr { page-break-inside: avoid; } .header, .order-title { page-break-after: avoid; } }
+  </style>
+</head>
+<body>
+<div class="doc">
+{{#pages}}
+<section class="page">
+  <header class="header">
+    <div class="brand">
+      <img src="/ladp_logo.svg" alt="L'ami du Pain" class="logo"/>
+      <div class="tagline">Votre boulanger fiable à La Rochelle et alentours</div>
+      <div class="company">
+        <div class="title">SARL L'AMI DU PAIN</div>
+        <div class="addr">6 RUE DE LA ROCHELLE<br/>17220 SAINT-ROGATIEN</div>
+        <div class="meta"><span class="label">SIRET</span> 517 503 298 00047</div>
+        {{#company.phone}}<div class="meta"><span class="label">Tél.</span> {{company.phone}}</div>{{/company.phone}}
+        {{#company.email}}<div class="meta"><span class="label">Email</span> {{company.email}}</div>{{/company.email}}
+      </div>
+    </div>
+    <div class="client">
+      <div class="client-title">Client</div>
+      {{#order.client.nom}}<div class="client-name">{{order.client.nom}}</div>{{/order.client.nom}}
+      {{#order.client_adresse}}
+        <div class="client-addr">
+          {{#numero_et_nom_de_la_rue}}{{numero_et_nom_de_la_rue}}{{/numero_et_nom_de_la_rue}}
+          {{#complement_d_adresse}}{{complement_d_adresse}}{{/complement_d_adresse}}
+          {{#code_postal}}{{code_postal}}{{/code_postal}} {{#ville}}{{ville}}{{/ville}}
+          {{#pays}}{{pays}}{{/pays}}
+        </div>
+      {{/order.client_adresse}}
+      {{#order.juridique.raison_sociale}}<div class="client-meta"><span class="label">Raison sociale</span> {{order.juridique.raison_sociale}}</div>{{/order.juridique.raison_sociale}}
+      {{#order.juridique.forme_juridique}}<div class="client-meta"><span class="label">Forme juridique</span> {{order.juridique.forme_juridique}}</div>{{/order.juridique.forme_juridique}}
+      {{#order.juridique.siren}}<div class="client-meta"><span class="label">SIREN</span> {{order.juridique.siren}}</div>{{/order.juridique.siren}}
+      {{#order.juridique.siret}}<div class="client-meta"><span class="label">SIRET</span> {{order.juridique.siret}}</div>{{/order.juridique.siret}}
+      {{#order.juridique.code_naf}}<div class="client-meta"><span class="label">Code NAF</span> {{order.juridique.code_naf}}</div>{{/order.juridique.code_naf}}
+      {{#order.juridique.tva_intracom}}<div class="client-meta"><span class="label">TVA intracom</span> {{order.juridique.tva_intracom}}</div>{{/order.juridique.tva_intracom}}
+      {{#order.client.site}}<div class="client-meta"><span class="label">Site</span> {{order.client.site}}</div>{{/order.client.site}}
+      {{#order.client.telephone}}<div class="client-meta"><span class="label">Tél.</span> {{order.client.telephone}}</div>{{/order.client.telephone}}
+    </div>
+  </header>
+
+  <div class="order-title">
+    <div class="doc-title">Bon de livraison</div>
+    <div class="order-sub"><span class="order-no">Commande #{{order.numero}}</span><span class="sep"> · </span><span class="order-date">du {{order.date_created_formatted}}</span></div>
+  </div>
+
+  {{#first_page}}
+  <section class="grid">
+    <div class="grid-item">
+      <div class="label">Date de livraison souhaitée</div>
+      <div class="value">{{order.date_livraison_formatted}}</div>
+    </div>
+    {{#order.besoin_de_cheque}}
+    <div class="grid-item">
+      <div class="label">Besoin de chèque</div>
+      <div class="value"><span class="chk on"></span><span>Oui</span></div>
+    </div>
+    {{/order.besoin_de_cheque}}
+    <div class="grid-item">
+      <div class="label">Type de livraison</div>
+      <div class="value">{{order.type.nom}}{{#order.type.description}} — {{order.type.description}}{{/order.type.description}}</div>
+    </div>
+    {{#order.demandes_speciales}}
+    <div class="grid-item">
+      <div class="label">Demandes spéciales</div>
+      <div class="value">{{order.demandes_speciales}}</div>
+    </div>
+    {{/order.demandes_speciales}}
+    <div class="grid-item">
+      <div class="label">Instructions de livraison</div>
+      <div class="value">{{#order.commentaire_client}}{{order.commentaire_client}}{{/order.commentaire_client}}{{^order.commentaire_client}}—{{/order.commentaire_client}}</div>
+    </div>
+  </section>
+  {{/first_page}}
+
+  <section>
+    <div class="table-title">Détails des articles</div>
+    <table class="lines">
+      <thead><tr><th class="col-num">#</th><th class="col-art">Article</th><th class="col-qty">Quantité</th><th class="col-cut">Découpe</th></tr></thead>
+      <tbody>
+        {{#lines}}
+        <tr><td class="col-num">{{num}}</td><td class="col-art">{{produit_nom}}</td><td class="col-qty">{{quantite}}</td><td class="col-cut">{{#tranche}}Tranché{{/tranche}}{{^tranche}}—{{/tranche}}</td></tr>
+        {{/lines}}
+        {{^lines}}<tr><td colspan="4" class="empty">Aucune ligne de commande</td></tr>{{/lines}}
+      </tbody>
+    </table>
+  </section>
+
+  <footer class="footer">
+    <div class="thanks">Merci de votre confiance et de votre fidélité.</div>
+    <div class="consigne">Merci de penser à retourner les emballages consignés le cas échéant.</div>
+    <div class="legal">Ce document n’est pas une pièce comptable. Il sert à informer des quantités exactes de votre commande. Les factures seront préparées séparément.</div>
+  </footer>
+</section>
+{{/pages}}
+</div>
+</body>
+</html>
