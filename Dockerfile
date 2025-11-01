@@ -23,7 +23,7 @@ WORKDIR /app
 
 # Устанавливаем только production зависимости
 COPY package*.json ./
-RUN npm ci --only=production && npm cache clean --force
+RUN npm install --only=production && npm cache clean --force
 
 # Копируем скомпилированные файлы из builder
 COPY --from=builder /app/dist ./dist
