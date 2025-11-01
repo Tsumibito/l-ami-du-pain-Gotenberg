@@ -1,0 +1,75 @@
+version: '3.8'
+
+services:
+  # PDF API сервис (Production)
+  pdf-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ladp-pdf-api-prod
+    ports:
+      - "3001:3001"
+    env_file:
+      - .env.production
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - GOTENBERG_URL=https://gotenberg.lamidupain17.com
+      - CORS_ORIGIN=https://directus.lamidupain17.com,https://pro.lamidupain17.com
+      - API_TOKEN=${API_TOKEN}
+      - MAX_CONCURRENT_GENERATIONS=5
+      - PDF_GENERATION_TIMEOUT=30000
+      - LOG_LEVEL=info
+      - LOG_FORMAT=json
+      - RATE_LIMIT_WINDOW_MS=60000
+      - RATE_LIMIT_MAX_REQUESTS=30
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    volumes:
+      # Монтируем шаблоны только для чтения
+      - ./templates:/app/templates:ro
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '1'
+          memory: 512M
+        reservations:
+          cpus: '0.25'
+          memory: 128M
+
+  # Gotenberg сервис (Production) - если нужен локально
+  # В продакшене Gotenberg будет отдельным сервисом на gotenberg.lamidupain17.com
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    container_name: ladp-gotenberg-prod
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--api-timeout=30s"
+      - "--api-port=3000"
+      - "--chromium-disable-javascript=false"
+      - "--chromium-allow-list=.*"
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: '2'
+          memory: 1G
+        reservations:
+          cpus: '0.5'
+          memory: 512M
+    profiles:
+      - local  # Только для локального тестирования

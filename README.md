@@ -36,13 +36,23 @@ openssl rand -hex 32
 
 ### 2. Запуск с Docker Compose
 
+**Development (с Gotenberg локально):**
 ```bash
-# Запустите PDF сервис
+# Запустите PDF сервис + Gotenberg
 docker-compose up -d
 
 # Проверьте статус
 docker-compose ps
 docker-compose logs -f pdf-api
+```
+
+**Production (с внешним Gotenberg):**
+```bash
+# Запустите только PDF API
+./deploy.sh
+
+# Или вручную:
+docker-compose -f docker-compose.prod.yml up -d pdf-api
 ```
 
 ### 3. Тестирование API
@@ -199,14 +209,41 @@ docker-compose up -d --build
 
 ## 🚢 Деплой в продакшен
 
-1. Сгенерируйте **криптостойкий API_TOKEN**
-2. Настройте **CORS_ORIGIN** с реальными URLs
-3. Убедитесь что **NODE_ENV=production**
-4. Запустите: `docker-compose up -d`
-5. Добавьте **PDF_API_TOKEN** в основной Directus .env
+### Вариант 1: Coolify (рекомендуется)
+См. **[DEPLOY_COOLIFY.md](./DEPLOY_COOLIFY.md)** для полной инструкции.
 
+### Вариант 2: Docker на сервере
+
+1. **Создайте production .env:**
 ```bash
-# В основном .env Directus
-PDF_API_URL=http://pdf-api:3001
+cp .env.example .env.production
+# Отредактируйте с реальными доменами и токеном
+```
+
+2. **Запустите production deploy:**
+```bash
+./deploy.sh
+```
+
+3. **Настройте обратный прокси** (Nginx/Caddy) для HTTPS:
+```nginx
+server {
+    listen 443 ssl;
+    server_name pdf-api.lamidupain17.com;
+    
+    ssl_certificate /path/to/cert.pem;
+    ssl_certificate_key /path/to/key.pem;
+    
+    location / {
+        proxy_pass http://localhost:3001;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+}
+```
+
+4. **Добавьте в Directus .env:**
+```bash
+PDF_API_URL=https://pdf-api.lamidupain17.com
 PDF_API_TOKEN=ваш_сгенерированный_токен
 ```
