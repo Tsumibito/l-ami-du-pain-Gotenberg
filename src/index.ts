@@ -45,7 +45,7 @@ app.use((req, _res, next) => {
 
 // Root endpoint - API information
 app.get('/', (_req, res) => {
-  res.json({
+  const apiInfo = {
     name: 'L\'ami du Pain PDF API',
     version: '1.0.0',
     status: 'running',
@@ -76,7 +76,11 @@ app.get('/', (_req, res) => {
       }
     },
     timestamp: new Date().toISOString()
-  });
+  };
+  
+  // Set content type and send formatted JSON
+  res.setHeader('Content-Type', 'application/json');
+  res.send(JSON.stringify(apiInfo, null, 2));
 });
 
 // Health check endpoint (no auth required)
