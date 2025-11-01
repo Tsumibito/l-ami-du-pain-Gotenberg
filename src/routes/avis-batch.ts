@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { renderTemplate, getAssets } from '../services/renderer.js';
 import { htmlToPdf } from '../services/gotenberg.js';
-import { formatDateParis, formatYMD } from '../utils/formatters.js';
+import { formatDateParis, formatDateReadable } from '../utils/formatters.js';
 import { paginateOrderLines } from '../utils/pagination.js';
 import { logger } from '../utils/logger.js';
 
@@ -56,7 +56,7 @@ router.post('/', async (req: Request, res: Response) => {
       const orderWithFormattedDates = {
         ...order,
         date_created_formatted: order.date_created ? formatDateParis(order.date_created) : '',
-        date_livraison_formatted: order.date_livraison ? formatYMD(order.date_livraison) : ''
+        date_livraison_formatted: order.date_livraison ? formatDateReadable(order.date_livraison) : ''
       };
 
       // Paginate lines
