@@ -94,7 +94,7 @@ app.use((err: any, req: express.Request, res: express.Response, _next: express.N
 });
 
 // Start server
-app.listen(PORT, '0.0.0.0', () => {
+app.listen(PORT, process.env.HOST || '0.0.0.0', () => {
   logger.info(`PDF API Server running on port ${PORT}`, {
     env: process.env.NODE_ENV || 'development',
     gotenbergUrl: process.env.GOTENBERG_URL
