@@ -28,14 +28,27 @@ router.post('/', async (req: Request, res: Response) => {
 
     logger.info(`Generating batch PDF for ${orders.length} orders`);
 
-    // Process each order and collect all pages
-    const allPages: any[] = [];
+    // Validate orders
+    const validOrders = orders.filter(order => {
+      const { company, order, lignes } = order;
+      return company && order && Array.isArray(lignes);
+    });
+
+    if (validOrders.length === 0) {
+      return res.status(400).json({
+        error: 'Bad Request',
+        message: 'No valid orders found in batch'
+      });
+    }
+
+    // Generate separate HTML for each order and combine with page breaks
+    let combinedHtml = '';
     
-    for (const orderData of orders) {
+    for (let i = 0; i < validOrders.length; i++) {
+      const orderData = validOrders[i];
       const { company, order, lignes } = orderData;
       
       if (!company || !order || !Array.isArray(lignes)) {
-        logger.warn(`Skipping invalid order: ${JSON.stringify(orderData)}`);
         continue;
       }
 
@@ -56,30 +69,25 @@ router.post('/', async (req: Request, res: Response) => {
         order: orderWithFormattedDates
       }));
 
-      // Add all pages from this order to the batch
-      allPages.push(...pagesWithData);
+      // Render HTML for this order
+      const orderHtml = await renderTemplate('avis.html', { pages: pagesWithData });
+      
+      // Add to combined HTML with page break (except for last order)
+      combinedHtml += orderHtml;
+      if (i < orders.length - 1) {
+        combinedHtml += '<div class="page-break"></div>';
+      }
     }
-
-    if (allPages.length === 0) {
-      return res.status(400).json({
-        error: 'Bad Request',
-        message: 'No valid orders found in batch'
-      });
-    }
-
-    // Render HTML with all pages
-    const html = await renderTemplate('avis.html', { pages: allPages });
     
     // Get assets (logo)
     const assets = await getAssets();
     
     // Generate PDF
-    const pdfBuffer = await htmlToPdf(html, assets);
+    const pdfBuffer = await htmlToPdf(combinedHtml, assets);
     
     const duration = Date.now() - startTime;
     logger.info(`Batch PDF generated successfully`, {
-      ordersCount: orders.length,
-      pagesCount: allPages.length,
+      ordersCount: validOrders.length,
       duration: `${duration}ms`,
       size: `${(pdfBuffer.length / 1024).toFixed(2)}KB`
     });

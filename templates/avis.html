@@ -50,7 +50,13 @@
     .footer { margin-top: 18px; font-size: 10px; color: #6b7280; text-align: center; }
     .footer .thanks { color: #111827; font-weight: 700; margin-bottom: 6px; font-size: 13px; margin-top: 16px; }
     .footer .consigne { margin-bottom: 6px; font-size: 12px; }
-    @media print { .lines tr { page-break-inside: avoid; } .header, .order-title { page-break-after: avoid; } }
+    .page-break { page-break-after: always; }
+    .no-break { page-break-inside: avoid; }
+    @media print { 
+      .lines tr { page-break-inside: avoid; } 
+      .header, .order-title { page-break-after: avoid; }
+      .page-break { page-break-after: always; }
+    }
   </style>
 </head>
 <body>
@@ -59,7 +65,7 @@
 <section class="page">
   <header class="header">
     <div class="brand">
-      <img src="/ladp_logo.svg" alt="L'ami du Pain" class="logo"/>
+      <img src="https://pro.lamidupain17.com/images/logo.jpg" alt="L'ami du Pain" class="logo"/>
       <div class="tagline">Votre boulanger fiable à La Rochelle et alentours</div>
       <div class="company">
         <div class="title">SARL L'AMI DU PAIN</div>
@@ -133,7 +139,7 @@
   </section>
   {{/first_page}}
 
-  <section>
+  <section class="no-break">
     <div class="table-title">Détails des articles</div>
     <table class="lines">
       <thead><tr><th class="col-num">#</th><th class="col-art">Article</th><th class="col-qty">Quantité</th><th class="col-cut">Découpe</th></tr></thead>
