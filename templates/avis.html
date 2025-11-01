@@ -7,7 +7,8 @@
     @page { size: A4; margin: 14mm; }
     html, body { height: 100%; margin: 0; font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, Arial; color: #111827; }
     .doc { display: block; filter: grayscale(100%); }
-    .page { display: block; }
+    .page { display: flex; flex-direction: column; min-height: 100vh; }
+    .content { flex: 1; }
     .header { display: flex; align-items: flex-start; gap: 16px; padding-bottom: 12px; border-bottom: 2px solid #e5e7eb; }
     .logo { width: 260px; max-width: 60%; max-height: 110px; height: auto; object-fit: contain; }
     .brand { flex: 1; min-width: 0; }
@@ -47,8 +48,8 @@
     .lines .col-qty { width: 24%; }
     .lines .col-cut { width: 10%; }
     .lines .empty { text-align: center; color: #6b7280; }
-    .footer { margin-top: 18px; font-size: 10px; color: #6b7280; text-align: center; }
-    .footer .thanks { color: #111827; font-weight: 700; margin-bottom: 6px; font-size: 13px; margin-top: 16px; }
+    .footer { margin-top: auto; font-size: 10px; color: #6b7280; text-align: center; padding-top: 18px; }
+    .footer .thanks { color: #111827; font-weight: 700; margin-bottom: 6px; font-size: 13px; }
     .footer .consigne { margin-bottom: 6px; font-size: 12px; }
     .page-break { page-break-after: always; }
     .no-break { page-break-inside: avoid; }
@@ -63,6 +64,7 @@
 <div class="doc">
 {{#pages}}
 <section class="page">
+  <div class="content">
   <header class="header">
     <div class="brand">
       <img src="https://pro.lamidupain17.com/images/logo.jpg" alt="L'ami du Pain" class="logo"/>
@@ -151,6 +153,7 @@
       </tbody>
     </table>
   </section>
+  </div>
 
   <footer class="footer">
     <div class="thanks">Merci de votre confiance et de votre fidélité.</div>
