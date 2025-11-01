@@ -29,8 +29,8 @@ router.post('/', async (req: Request, res: Response) => {
     logger.info(`Generating batch PDF for ${orders.length} orders`);
 
     // Validate orders
-    const validOrders = orders.filter(order => {
-      const { company, order, lignes } = order;
+    const validOrders = orders.filter(orderData => {
+      const { company, order, lignes } = orderData;
       return company && order && Array.isArray(lignes);
     });
 
