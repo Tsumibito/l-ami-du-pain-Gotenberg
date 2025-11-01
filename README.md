@@ -73,7 +73,15 @@ curl -X POST http://localhost:3001/api/pdf/avis \
   -d @examples/avis-example.json \
   --output test-avis.pdf
 
+# Тестирование Batch endpoint
+curl -X POST http://localhost:3001/api/pdf/avis-batch \
+  -H "Authorization: Bearer $API_TOKEN" \
+  -H "Content-Type: application/json" \
+  -d @examples/avis-batch-example.json \
+  --output test-batch.pdf
+
 open test-avis.pdf
+open test-batch.pdf
 ```
 
 ## 📡 API Endpoints
@@ -86,6 +94,22 @@ Content-Type: application/json
 
 { "company": {...}, "order": {...}, "lignes": [...] }
 ```
+
+### Batch Bon de livraison (Avis) - НОВОЕ!
+```http
+POST /api/pdf/avis-batch
+Authorization: Bearer <token>
+Content-Type: application/json
+
+{
+  "orders": [
+    { "company": {...}, "order": {...}, "lignes": [...] },
+    { "company": {...}, "order": {...}, "lignes": [...] },
+    ...
+  ]
+}
+```
+Генерирует один PDF из множества Bons de livraison для удобной печати.
 
 ### Feuille de synthèse (Summary)
 ```http
@@ -166,6 +190,7 @@ pdf-templates/
 │       └── ladp_logo.svg
 ├── examples/             # 📝 Примеры payload
 │   ├── avis-example.json
+│   ├── avis-batch-example.json  # 🆕 Batch endpoint пример
 │   └── summary-example.json
 ├── test-api.sh           # 🧪 Тестовый скрипт
 └── src/                  # 💻 Исходный код

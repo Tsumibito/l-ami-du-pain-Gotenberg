@@ -131,7 +131,124 @@ Authorization: Bearer your_api_token_here
 
 ---
 
-### 2. Feuille de synthèse (Tour Summary)
+### 2. Batch Bon de livraison (Multiple Avis) 🆕
+
+Генерация одного PDF документа из множества Bons de livraison. Идеально для пакетной печати.
+
+**Endpoint:**
+```http
+POST /api/pdf/avis-batch
+Content-Type: application/json
+Authorization: Bearer your_api_token_here
+```
+
+**Request Body:**
+```json
+{
+  "orders": [
+    {
+      "company": {
+        "phone": "05 46 00 00 00",
+        "email": "contact@lamidupain17.com"
+      },
+      "order": {
+        "numero": "CMD-2025-001",
+        "date_created": "2025-01-15T08:30:00Z",
+        "date_livraison": "2025-01-16",
+        "besoin_de_cheque": true,
+        "type": {
+          "nom": "Livraison standard",
+          "description": "Livraison entre 6h et 9h"
+        },
+        "demandes_speciales": "Merci de sonner à l'interphone",
+        "client": {
+          "nom": "Boulangerie Martin"
+        },
+        "client_adresse": {
+          "numero_et_nom_de_la_rue": "12 Rue de la Paix",
+          "code_postal": "17000",
+          "ville": "La Rochelle"
+        }
+      },
+      "lignes": [
+        {
+          "num": 1,
+          "produit_nom": "Pain de campagne 400g",
+          "quantite": "10 pièces",
+          "tranche": false
+        },
+        {
+          "num": 2,
+          "produit_nom": "Baguette tradition",
+          "quantite": "25 pièces",
+          "tranche": false
+        }
+      ]
+    },
+    {
+      "company": {
+        "phone": "05 46 00 00 00",
+        "email": "contact@lamidupain17.com"
+      },
+      "order": {
+        "numero": "CMD-2025-002",
+        "date_created": "2025-01-15T09:00:00Z",
+        "date_livraison": "2025-01-16",
+        "besoin_de_cheque": false,
+        "type": {
+          "nom": "Livraison express"
+        },
+        "client": {
+          "nom": "Restaurant Le Gourmet"
+        },
+        "client_adresse": {
+          "numero_et_nom_de_la_rue": "45 Avenue du Port",
+          "code_postal": "17000",
+          "ville": "La Rochelle"
+        }
+      },
+      "lignes": [
+        {
+          "num": 1,
+          "produit_nom": "Pain complet 500g",
+          "quantite": "15 pièces",
+          "tranche": true
+        },
+        {
+          "num": 2,
+          "produit_nom": "Croissant",
+          "quantite": "30 pièces",
+          "tranche": false
+        }
+      ]
+    }
+  ]
+}
+```
+
+**Response:**
+- PDF файл, содержащий все Bons de livraison последовательно
+- Каждый avis начинается с новой страницы
+- Многостраничные документы внутри сохраняют нумерацию страниц
+
+**Features:**
+- ✅ Автоматическая пагинация для каждого заказа
+- ✅ Заголовки на 2+ страницах с номером заказа и клиентом
+- ✅ Поддержка "Demandes spéciales" и "Besoin de chèque"
+- ✅ Оптимизировано для печати
+
+**Example Request:**
+```bash
+curl -X POST https://pdf-api.lamidupain17.com/api/pdf/avis-batch \
+  -H "Authorization: Bearer your_token" \
+  -H "Content-Type: application/json" \
+  -d @examples/avis-batch-example.json \
+  --output batch-avis.pdf
+```
+
+---
+
+### 3. Feuille de synthèse (Tour Summary)
 
 Генерация сводки заказов для тура.
 
