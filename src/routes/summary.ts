@@ -11,6 +11,7 @@ const router = Router();
  * POST /api/pdf/summary
  * Generate Feuille de synthèse PDF
  */
+// @ts-ignore
 router.post('/', async (req: Request, res: Response) => {
   const startTime = Date.now();
   

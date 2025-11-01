@@ -1,5 +1,5 @@
 import { format, parseISO } from 'date-fns';
-import { toZonedTime } from 'date-fns-tz';
+import { utcToZonedTime } from 'date-fns-tz';
 import { fr } from 'date-fns/locale';
 
 const TIMEZONE = 'Europe/Paris';
@@ -11,7 +11,7 @@ const TIMEZONE = 'Europe/Paris';
 export function formatDateParis(isoDate: string): string {
   try {
     const date = parseISO(isoDate);
-    const zonedDate = toZonedTime(date, TIMEZONE);
+    const zonedDate = utcToZonedTime(date, TIMEZONE);
     return format(zonedDate, 'dd/MM/yyyy', { locale: fr });
   } catch (error) {
     return isoDate;
@@ -25,7 +25,7 @@ export function formatDateParis(isoDate: string): string {
 export function formatDateReadable(dateStr: string): string {
   try {
     const date = parseISO(dateStr);
-    const zonedDate = toZonedTime(date, TIMEZONE);
+    const zonedDate = utcToZonedTime(date, TIMEZONE);
     return format(zonedDate, 'EEEE d MMMM yyyy', { locale: fr });
   } catch (error) {
     return dateStr;

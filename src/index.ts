@@ -35,7 +35,7 @@ const limiter = rateLimit({
 app.use('/api/pdf', limiter);
 
 // Request logging
-app.use((req, res, next) => {
+app.use((req, _res, next) => {
   logger.info(`${req.method} ${req.path}`, {
     ip: req.ip,
     userAgent: req.get('user-agent')
@@ -44,7 +44,7 @@ app.use((req, res, next) => {
 });
 
 // Health check endpoint (no auth required)
-app.get('/health', async (req, res) => {
+app.get('/health', async (_req, res) => {
   try {
     const gotenbergStatus = await checkGotenbergHealth();
     
@@ -80,7 +80,7 @@ app.use((req, res) => {
 });
 
 // Error handler
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, req: express.Request, res: express.Response, _next: express.NextFunction) => {
   logger.error('Unhandled error', {
     error: err.message,
     stack: err.stack,

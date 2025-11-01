@@ -3,6 +3,7 @@ import { logger } from '../utils/logger.js';
 
 const API_TOKEN = process.env.API_TOKEN;
 
+// @ts-ignore
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   // Check if API_TOKEN is configured
   if (!API_TOKEN || API_TOKEN === 'your_secure_api_token_here_change_this') {

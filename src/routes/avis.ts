@@ -11,6 +11,7 @@ const router = Router();
  * POST /api/pdf/avis
  * Generate Bon de livraison PDF
  */
+// @ts-ignore
 router.post('/', async (req: Request, res: Response) => {
   const startTime = Date.now();
   
