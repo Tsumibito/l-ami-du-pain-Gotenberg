@@ -45,7 +45,7 @@ router.post('/', async (req: Request, res: Response) => {
     
     // Prepare products with computed totals for each delivery type
     const preparedProducts = sortedProducts.map(product => {
-      const deliveryValues = meta.deliveryTypes.map(type => ({
+      const deliveryValues = meta.deliveryTypes.map((type: any) => ({
         id: type.id,
         value: product.totals?.[type.id] || 0
       }));
