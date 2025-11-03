@@ -23,13 +23,12 @@
       "telephone": "+33 5 46 11 22 33",
       "site": "www.boulangerie-martin.fr"
     },
-    "client_adresse": {
-      "numero_et_nom_de_la_rue": "15 rue du Commerce",
-      "complement_d_adresse": "Bâtiment B",
-      "code_postal": "17000",
-      "ville": "La Rochelle",
-      "pays": "France"
-    },
+    "client_adresse": [
+      "15 rue du Commerce",
+      "Bâtiment B",
+      "17000 La Rochelle",
+      "France"
+    ],
     "juridique": {
       "raison_sociale": "SARL Boulangerie Martin",
       "forme_juridique": "SARL",

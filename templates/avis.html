@@ -82,10 +82,7 @@
       {{#order.client.nom}}<div class="client-name">{{order.client.nom}}</div>{{/order.client.nom}}
       {{#order.client_adresse}}
         <div class="client-addr">
-          {{#numero_et_nom_de_la_rue}}{{numero_et_nom_de_la_rue}}{{/numero_et_nom_de_la_rue}}<br/>
-          {{#complement_d_adresse}}{{complement_d_adresse}}<br/>{{/complement_d_adresse}}
-          {{#code_postal}}{{code_postal}}{{/code_postal}} {{#ville}}{{ville}}{{/ville}}<br/>
-          {{#pays}}{{pays}}{{/pays}}
+          {{#.}}{{{.}}}<br/>{{/.}}
         </div>
       {{/order.client_adresse}}
       {{#order.juridique.raison_sociale}}<div class="client-meta"><span class="label">Raison sociale</span> {{order.juridique.raison_sociale}}</div>{{/order.juridique.raison_sociale}}

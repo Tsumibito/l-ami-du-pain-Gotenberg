@@ -52,13 +52,12 @@ Authorization: Bearer your_api_token_here
       "telephone": "+33 5 46 11 22 33",
       "site": "www.boulangerie-martin.fr"
     },
-    "client_adresse": {
-      "numero_et_nom_de_la_rue": "15 rue du Commerce",
-      "complement_d_adresse": "Bâtiment B",
-      "code_postal": "17000",
-      "ville": "La Rochelle",
-      "pays": "France"
-    },
+    "client_adresse": [
+      "15 rue du Commerce",
+      "Bâtiment B",
+      "17000 La Rochelle",
+      "France"
+    ],
     "juridique": {
       "raison_sociale": "SARL Boulangerie Martin",
       "forme_juridique": "SARL",
@@ -111,12 +110,8 @@ Authorization: Bearer your_api_token_here
 | `order.client.nom` ⚠️ | string | Название клиента |
 | `order.client.telephone` | string | Телефон клиента |
 | `order.client.site` | string | Сайт клиента |
-| `order.client_adresse` | object | Адрес клиента (отображается под именем) |
-| `order.client_adresse.numero_et_nom_de_la_rue` | string | Улица и номер (например: "15 rue du Commerce") |
-| `order.client_adresse.complement_d_adresse` | string | Дополнение к адресу (например: "Bâtiment B") |
-| `order.client_adresse.code_postal` | string | Почтовый индекс (например: "17000") |
-| `order.client_adresse.ville` | string | Город (например: "La Rochelle") |
-| `order.client_adresse.pays` | string | Страна (например: "France") |
+| `order.client_adresse` | array | Массив строк адреса (отображается под именем) |
+| `order.client_adresse[]` | string | Строка адреса (каждая строка на новой строке в PDF) |
 | `order.juridique.*` | object | Юридические данные клиента |
 | `lignes` ⚠️ | array | Массив строк заказа |
 | `lignes[].num` ⚠️ | number | Номер строки |
@@ -130,7 +125,7 @@ Authorization: Bearer your_api_token_here
 - Body: Binary PDF stream
 
 **Отображение адреса клиента:**
-Адрес отображается под именем клиента в следующем формате:
+Адрес отображается под именем клиента. Каждая строка массива выводится на новой строке:
 ```
 Client
 Boulangerie Martin
@@ -140,7 +135,17 @@ Bâtiment B
 France
 ```
 
-Все поля `client_adresse` опциональны - отображаются только заполненные.
+**Формат данных:**
+```json
+"client_adresse": [
+  "15 rue du Commerce",
+  "Bâtiment B", 
+  "17000 La Rochelle",
+  "France"
+]
+```
+
+Массив может содержать любое количество строк - отображаются все элементы массива.
 
 **Примечания:**
 - Автоматическая пагинация: 12 строк на первую страницу (если нет `demandes_speciales`), иначе меньше
@@ -184,13 +189,12 @@ Authorization: Bearer your_api_token_here
           "nom": "Boulangerie Martin",
           "telephone": "+33 5 46 11 22 33"
         },
-        "client_adresse": {
-          "numero_et_nom_de_la_rue": "12 Rue de la Paix",
-          "complement_d_adresse": "Appartement 3",
-          "code_postal": "17000",
-          "ville": "La Rochelle",
-          "pays": "France"
-        }
+        "client_adresse": [
+          "12 Rue de la Paix",
+          "Appartement 3",
+          "17000 La Rochelle",
+          "France"
+        ]
       },
       "lignes": [
         {
@@ -225,12 +229,11 @@ Authorization: Bearer your_api_token_here
           "nom": "Restaurant Le Gourmet",
           "telephone": "+33 5 46 22 33 44"
         },
-        "client_adresse": {
-          "numero_et_nom_de_la_rue": "45 Avenue du Port",
-          "code_postal": "17000",
-          "ville": "La Rochelle",
-          "pays": "France"
-        }
+        "client_adresse": [
+          "45 Avenue du Port",
+          "17000 La Rochelle",
+          "France"
+        ]
       },
       "lignes": [
         {

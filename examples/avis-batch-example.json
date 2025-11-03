@@ -18,11 +18,10 @@
         "client": {
           "nom": "Boulangerie Martin"
         },
-        "client_adresse": {
-          "numero_et_nom_de_la_rue": "12 Rue de la Paix",
-          "code_postal": "17000",
-          "ville": "La Rochelle"
-        }
+        "client_adresse": [
+          "12 Rue de la Paix",
+          "17000 La Rochelle"
+        ]
       },
       "lignes": [
         {
