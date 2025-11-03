@@ -110,8 +110,13 @@ Authorization: Bearer your_api_token_here
 | `order.client.nom` ⚠️ | string | Название клиента |
 | `order.client.telephone` | string | Телефон клиента |
 | `order.client.site` | string | Сайт клиента |
-| `order.client_adresse` | array | Массив строк адреса (отображается под именем) |
-| `order.client_adresse[]` | string | Строка адреса (каждая строка на новой строке в PDF) |
+| `order.client_adresse` | array/object | Адрес клиента (отображается под именем) |
+| `order.client_adresse[]` (array) | string | Строка адреса (каждая строка на новой строке в PDF) |
+| `order.client_adresse.numero_et_nom_de_la_rue` (object) | string | Улица и номер |
+| `order.client_adresse.complement_d_adresse` (object) | string | Дополнение к адресу |
+| `order.client_adresse.code_postal` (object) | string | Почтовый индекс |
+| `order.client_adresse.ville` (object) | string | Город |
+| `order.client_adresse.pays` (object) | string | Страна |
 | `order.juridique.*` | object | Юридические данные клиента |
 | `lignes` ⚠️ | array | Массив строк заказа |
 | `lignes[].num` ⚠️ | number | Номер строки |
@@ -125,17 +130,9 @@ Authorization: Bearer your_api_token_here
 - Body: Binary PDF stream
 
 **Отображение адреса клиента:**
-Адрес отображается под именем клиента. Каждая строка массива выводится на новой строке:
-```
-Client
-Boulangerie Martin
-15 rue du Commerce
-Bâtiment B
-17000 La Rochelle
-France
-```
+Адрес отображается под именем клиента. Поддерживается два формата данных:
 
-**Формат данных:**
+**Формат 1: Массив строк**
 ```json
 "client_adresse": [
   "15 rue du Commerce",
@@ -145,7 +142,28 @@ France
 ]
 ```
 
-Массив может содержать любое количество строк - отображаются все элементы массива.
+**Формат 2: Объект с полями**
+```json
+"client_adresse": {
+  "numero_et_nom_de_la_rue": "15 rue du Commerce",
+  "complement_d_adresse": "Bâtiment B",
+  "code_postal": "17000",
+  "ville": "La Rochelle",
+  "pays": "France"
+}
+```
+
+**Результат в PDF (одинаковый для обоих форматов):**
+```
+Client
+Boulangerie Martin
+15 rue du Commerce
+Bâtiment B
+17000 La Rochelle
+France
+```
+
+Шаблон автоматически определяет формат и использует соответствующее отображение.
 
 **Примечания:**
 - Автоматическая пагинация: 12 строк на первую страницу (если нет `demandes_speciales`), иначе меньше

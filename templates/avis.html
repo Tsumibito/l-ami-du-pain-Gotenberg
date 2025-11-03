@@ -80,11 +80,18 @@
     <div class="client">
       <div class="client-title">Client</div>
       {{#order.client.nom}}<div class="client-name">{{order.client.nom}}</div>{{/order.client.nom}}
-      {{#order.client_adresse}}
+      {{#order.client_adresse.numero_et_nom_de_la_rue}}
+        <div class="client-addr">
+          {{order.client_adresse.numero_et_nom_de_la_rue}}{{#order.client_adresse.complement_d_adresse}}<br/>{{order.client_adresse.complement_d_adresse}}{{/order.client_adresse.complement_d_adresse}}{{#order.client_adresse.code_postal}}<br/>{{order.client_adresse.code_postal}} {{#order.client_adresse.ville}}{{order.client_adresse.ville}}{{/order.client_adresse.ville}}{{/order.client_adresse.code_postal}}{{#order.client_adresse.pays}}<br/>{{order.client_adresse.pays}}{{/order.client_adresse.pays}}
+        </div>
+      {{/order.client_adresse.numero_et_nom_de_la_rue}}
+      {{^order.client_adresse.numero_et_nom_de_la_rue}}
+        {{#order.client_adresse}}
         <div class="client-addr">
           {{#.}}{{{.}}}<br/>{{/.}}
         </div>
-      {{/order.client_adresse}}
+        {{/order.client_adresse}}
+      {{/order.client_adresse.numero_et_nom_de_la_rue}}
       {{#order.juridique.raison_sociale}}<div class="client-meta"><span class="label">Raison sociale</span> {{order.juridique.raison_sociale}}</div>{{/order.juridique.raison_sociale}}
       {{#order.juridique.forme_juridique}}<div class="client-meta"><span class="label">Forme juridique</span> {{order.juridique.forme_juridique}}</div>{{/order.juridique.forme_juridique}}
       {{#order.juridique.siren}}<div class="client-meta"><span class="label">SIREN</span> {{order.juridique.siren}}</div>{{/order.juridique.siren}}
