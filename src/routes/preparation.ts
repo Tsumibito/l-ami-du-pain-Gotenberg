@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { renderTemplate, getAssets } from '../services/renderer.js';
 import { htmlToPdf } from '../services/gotenberg.js';
-import { formatDateParis, formatDateTimeParis } from '../utils/formatters.js';
+import { formatDateTimeParis } from '../utils/formatters.js';
 import { sortProducts } from '../utils/pagination.js';
 import { logger } from '../utils/logger.js';
 
