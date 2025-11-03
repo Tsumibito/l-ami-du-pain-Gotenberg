@@ -41,7 +41,7 @@
     .table-title { font-weight: 700; margin-bottom: 6px; margin-top: 16px; }
     .lines { width: 100%; border-collapse: collapse; table-layout: fixed; }
     .lines thead th { text-align: left; font-size: 11px; color: #6b7280; font-weight: 600; border-bottom: 1.5px solid #e5e7eb; padding: 6px; }
-    .lines tbody td { padding: 7px 6px; border-bottom: 1px solid #e5e7eb; font-size: 12px; }
+    .lines tbody td { padding: 7px 6px; border-bottom: 1px solid #e5e7eb; font-size: 14px; }
     .lines tbody tr:nth-child(even) { background: #fafafa; }
     .lines .col-num { width: 8%; }
     .lines .col-art { width: 58%; }
@@ -82,9 +82,9 @@
       {{#order.client.nom}}<div class="client-name">{{order.client.nom}}</div>{{/order.client.nom}}
       {{#order.client_adresse}}
         <div class="client-addr">
-          {{#numero_et_nom_de_la_rue}}{{numero_et_nom_de_la_rue}}{{/numero_et_nom_de_la_rue}}
-          {{#complement_d_adresse}}{{complement_d_adresse}}{{/complement_d_adresse}}
-          {{#code_postal}}{{code_postal}}{{/code_postal}} {{#ville}}{{ville}}{{/ville}}
+          {{#numero_et_nom_de_la_rue}}{{numero_et_nom_de_la_rue}}{{/numero_et_nom_de_la_rue}}<br/>
+          {{#complement_d_adresse}}{{complement_d_adresse}}<br/>{{/complement_d_adresse}}
+          {{#code_postal}}{{code_postal}}{{/code_postal}} {{#ville}}{{ville}}{{/ville}}<br/>
           {{#pays}}{{pays}}{{/pays}}
         </div>
       {{/order.client_adresse}}
@@ -144,10 +144,10 @@
   <section class="no-break">
     <div class="table-title">Détails des articles</div>
     <table class="lines">
-      <thead><tr><th class="col-num">#</th><th class="col-art">Article</th><th class="col-qty">Quantité</th><th class="col-cut">Découpe</th></tr></thead>
+      <thead><tr><th class="col-num">#</th><th class="col-art">Article</th><th class="col-qty">Quantité</th><th class="col-cut">Tranché</th></tr></thead>
       <tbody>
         {{#lines}}
-        <tr><td class="col-num">{{num}}</td><td class="col-art">{{produit_nom}}</td><td class="col-qty">{{quantite}}</td><td class="col-cut">{{#tranche}}Tranché{{/tranche}}{{^tranche}}—{{/tranche}}</td></tr>
+        <tr><td class="col-num">{{num}}</td><td class="col-art">{{produit_nom}}</td><td class="col-qty">{{quantite}}</td><td class="col-cut">{{#tranche}}<span class="chk on"></span>Oui{{/tranche}}{{^tranche}}—{{/tranche}}</td></tr>
         {{/lines}}
         {{^lines}}<tr><td colspan="4" class="empty">Aucune ligne de commande</td></tr>{{/lines}}
       </tbody>
