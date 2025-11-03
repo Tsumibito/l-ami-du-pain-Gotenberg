@@ -52,7 +52,7 @@ router.post('/', async (req: Request, res: Response) => {
         continue;
       }
 
-      // Format dates
+      // Format dates and preserve all order data
       const orderWithFormattedDates = {
         ...order,
         date_created_formatted: order.date_created ? formatDateParis(order.date_created) : '',
@@ -70,6 +70,13 @@ router.post('/', async (req: Request, res: Response) => {
       }));
 
       // Render HTML for this order
+      logger.info('Rendering order with data', {
+        orderNumero: order.numero,
+        hasClient: !!order.client,
+        hasClientAdresse: !!order.client_adresse,
+        clientNom: order.client?.nom,
+        clientAdresse: order.client_adresse
+      });
       const orderHtml = await renderTemplate('avis.html', { pages: pagesWithData });
       
       // Add to combined HTML with page break (except for last order)
