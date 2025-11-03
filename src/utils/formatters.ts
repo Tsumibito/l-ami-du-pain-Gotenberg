@@ -20,6 +20,20 @@ export function formatDateParis(isoDate: string): string {
 }
 
 /**
+ * Format ISO date string to Paris timezone date and time
+ * Example: "2025-10-31T08:30:00Z" → "31/10/2025 à 09:30"
+ */
+export function formatDateTimeParis(isoDate: string): string {
+  try {
+    const date = parseISO(isoDate);
+    const zonedDate = utcToZonedTime(date, TIMEZONE);
+    return format(zonedDate, 'dd/MM/yyyy à HH:mm', { locale: fr });
+  } catch (error) {
+    return isoDate;
+  }
+}
+
+/**
  * Format ISO date string to readable format in French
  * Example: "2025-10-31" → "vendredi 31 octobre 2025"
  */

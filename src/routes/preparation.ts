@@ -1,7 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { renderTemplate, getAssets } from '../services/renderer.js';
 import { htmlToPdf } from '../services/gotenberg.js';
-import { formatDateParis } from '../utils/formatters.js';
+import { formatDateParis, formatDateTimeParis } from '../utils/formatters.js';
 import { sortProducts } from '../utils/pagination.js';
 import { logger } from '../utils/logger.js';
 
@@ -37,7 +37,7 @@ router.post('/', async (req: Request, res: Response) => {
     const formattedMeta = {
       ...meta,
       printedAt: meta.printedAt || new Date().toISOString(),
-      printedAtFormatted: formatDateParis(meta.printedAt || new Date().toISOString())
+      printedAtFormatted: formatDateTimeParis(meta.printedAt || new Date().toISOString())
     };
     
     // Sort products according to sort mode
