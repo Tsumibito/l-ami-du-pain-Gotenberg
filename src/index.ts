@@ -6,6 +6,7 @@ import { authMiddleware } from './middleware/auth.js';
 import avisRouter from './routes/avis.js';
 import avisBatchRouter from './routes/avis-batch.js';
 import summaryRouter from './routes/summary.js';
+import preparationRouter from './routes/preparation.js';
 import { logger } from './utils/logger.js';
 import { checkGotenbergHealth } from './services/gotenberg.js';
 
@@ -73,13 +74,20 @@ app.get('/', (_req, res) => {
         path: '/api/pdf/summary',
         description: 'Generate Feuille de synthèse PDF',
         auth: 'Bearer token required'
+      },
+      pdfPreparation: {
+        method: 'POST',
+        path: '/api/pdf/gotenberg/preparation',
+        description: 'Generate Fiche de préparation des commandes PDF',
+        auth: 'Bearer token required'
       }
     },
     documentation: {
       github: 'https://github.com/Tsumibito/l-ami-du-pain-Gotenberg',
       examples: {
         avis: '/examples/avis-example.json',
-        summary: '/examples/summary-example.json'
+        summary: '/examples/summary-example.json',
+        preparation: '/examples/preparation-example.json'
       }
     },
     timestamp: new Date().toISOString()
@@ -118,6 +126,7 @@ app.get('/health', async (_req, res) => {
 app.use('/api/pdf/avis', authMiddleware, avisRouter);
 app.use('/api/pdf/avis-batch', authMiddleware, avisBatchRouter);
 app.use('/api/pdf/summary', authMiddleware, summaryRouter);
+app.use('/api/pdf/gotenberg/preparation', authMiddleware, preparationRouter);
 
 // 404 handler
 app.use((req, res) => {

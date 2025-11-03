@@ -73,3 +73,29 @@ export function sortOrders(orders: any[], sortMode: string = 'numero'): any[] {
       return sorted;
   }
 }
+
+/**
+ * Sort products by specified mode
+ */
+export function sortProducts(products: any[], sortMode: string = 'alphabetical'): any[] {
+  const sorted = [...products];
+  
+  switch (sortMode) {
+    case 'alphabetical':
+      return sorted.sort((a, b) => 
+        (a.produit_nom || '').localeCompare(b.produit_nom || '', 'fr')
+      );
+    
+    case 'total':
+      return sorted.sort((a, b) => 
+        (b.total_all || 0) - (a.total_all || 0)
+      );
+    
+    case 'type':
+      // Sort by a specific delivery type (need to get the type ID from sortMode)
+      return sorted; // Will be implemented based on specific type
+    
+    default:
+      return sorted;
+  }
+}

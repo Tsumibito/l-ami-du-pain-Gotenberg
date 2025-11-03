@@ -539,6 +539,138 @@ def generate_avis_pdf(order_data, api_token):
 
 ---
 
+### 3. Fiche de préparation des commandes
+
+Генерация документа "Fiche de préparation" для суммарного списка продуктов к приготовлению.
+
+**Endpoint:**
+```http
+POST /api/pdf/gotenberg/preparation
+Content-Type: application/json
+Authorization: Bearer your_api_token_here
+```
+
+**Request Body:**
+```json
+{
+  "meta": {
+    "title": "Fiche de Préparation des Commandes",
+    "printedAt": "2025-11-03T15:45:00.000Z",
+    "selectedDate": "2025-11-03",
+    "selectedDateFormatted": "dimanche 3 novembre 2025",
+    "sortMode": {
+      "type": "alphabetical"
+    },
+    "deliveryTypes": [
+      {
+        "id": "livraison",
+        "nom": "Livraison",
+        "description": "Livraison standard"
+      },
+      {
+        "id": "emporter", 
+        "nom": "À emporter",
+        "description": "Retrait en magasin"
+      }
+    ]
+  },
+  "products": [
+    {
+      "produit_id": "baguette-trad",
+      "produit_nom": "Baguette tradition",
+      "produit_description": "Baguette de 250g",
+      "total_all": 45,
+      "totals": {
+        "livraison": 30,
+        "emporter": 15
+      }
+    },
+    {
+      "produit_id": "pave-campagne",
+      "produit_nom": "Pavé campagne",
+      "produit_description": "Pain de 400g",
+      "total_all": 28,
+      "totals": {
+        "livraison": 20,
+        "emporter": 8
+      }
+    }
+  ]
+}
+```
+
+**Поля запроса:**
+
+#### meta (обязательно)
+- **title**: Заголовок документа
+- **printedAt**: Дата/время печати в формате ISO (опционально)
+- **selectedDate**: Дата операции в формате YYYY-MM-DD
+- **selectedDateFormatted**: Отформатированная дата на français
+- **sortMode**: Режим сортировки
+  - **type**: "alphabetical", "total", или "type"
+- **deliveryTypes**: Массив типов доставки
+
+#### products (обязательно)
+Массив продуктов с полями:
+- **produit_id**: Уникальный идентификатор продукта
+- **produit_nom**: Название продукта
+- **produit_description**: Описание продукта (опционально)
+- **total_all**: Общее количество по всем типам доставки
+- **totals**: Объект с количествами по каждому типу доставки
+
+**Response:**
+```http
+Content-Type: application/pdf
+Content-Disposition: attachment; filename="fiche-preparation-2025-11-03.pdf"
+Content-Length: 123456
+
+[PDF binary data]
+```
+
+**Пример использования:**
+
+#### JavaScript/Node.js
+```javascript
+const generatePreparationPDF = async (preparationData) => {
+  const response = await axios.post(
+    'http://localhost:3001/api/pdf/gotenberg/preparation',
+    preparationData,
+    {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${process.env.PDF_API_TOKEN}`
+      },
+      responseType: 'stream'
+    }
+  );
+  
+  // Сохранить в файл
+  response.data.pipe(fs.createWriteStream('fiche-preparation.pdf'));
+};
+```
+
+#### Python
+```python
+import requests
+
+def generate_preparation_pdf(preparation_data, api_token):
+    response = requests.post(
+        'http://localhost:3001/api/pdf/gotenberg/preparation',
+        headers={
+            'Content-Type': 'application/json',
+            'Authorization': f'Bearer {api_token}'
+        },
+        json=preparation_data
+    )
+    
+    response.raise_for_status()
+    
+    with open('fiche-preparation.pdf', 'wb') as f:
+        f.write(response.content)
+```
+
+---
+
 ## Производительность
 
 - **Время генерации**: 1-2 секунды на PDF

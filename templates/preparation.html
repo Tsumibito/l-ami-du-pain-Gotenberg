@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8"/>
+  <title>Fiche de Préparation des Commandes — {{meta.selectedDateFormatted}}</title>
+  <style>
+    @page { size: A4; margin: 15mm; }
+    html, body { 
+      height: 100%; 
+      margin: 0; 
+      font-family: Arial, sans-serif; 
+      color: #000000; 
+      font-size: 11pt;
+    }
+    .doc { display: block; }
+    .page { display: block; }
+    
+    /* Header styles */
+    .header { 
+      display: flex; 
+      align-items: flex-start; 
+      gap: 16px; 
+      padding-bottom: 10px; 
+      border-bottom: 2px solid #003366; 
+      margin-bottom: 20px;
+    }
+    .logo { 
+      width: 60mm; 
+      max-width: 60%; 
+      max-height: 50px; 
+      height: auto; 
+      object-fit: contain; 
+    }
+    .h-title { display: flex; flex-direction: column; flex: 1; }
+    .t1 { 
+      font-size: 18pt; 
+      font-weight: bold; 
+      color: #003366; 
+      margin-bottom: 4px;
+    }
+    .t2 { 
+      font-size: 14pt; 
+      font-weight: bold; 
+      color: #000000; 
+      margin-bottom: 2px;
+    }
+    .t3 { 
+      font-size: 11pt; 
+      color: #374151; 
+      margin-bottom: 2px;
+    }
+    .t4 { 
+      font-size: 10pt; 
+      color: #6b7280; 
+    }
+    
+    /* Warning box */
+    .warning {
+      background: #FFFFCC;
+      border: 2px solid #FF9900;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+    .warning-title {
+      font-size: 12pt;
+      font-weight: bold;
+      color: #FF6600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .warning-text {
+      font-size: 10pt;
+      line-height: 1.4;
+      color: #333333;
+    }
+    
+    /* Table styles */
+    .table-container {
+      margin-bottom: 20px;
+    }
+    .products-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      border: 1px solid #CCCCCC;
+      font-size: 10pt;
+    }
+    .products-table th {
+      background: #F0F0F0;
+      font-weight: bold;
+      padding: 8px 6px;
+      text-align: center;
+      border-bottom: 1px solid #CCCCCC;
+      border-right: 1px solid #CCCCCC;
+      font-size: 10pt;
+    }
+    .products-table th:first-child {
+      text-align: left;
+      width: 40%;
+    }
+    .products-table th:last-child {
+      border-right: none;
+      width: 15%;
+    }
+    .products-table td {
+      padding: 8px 6px;
+      border-bottom: 1px solid #CCCCCC;
+      border-right: 1px solid #CCCCCC;
+      vertical-align: top;
+    }
+    .products-table td:first-child {
+      border-left: none;
+    }
+    .products-table td:last-child {
+      border-right: none;
+      text-align: center;
+      font-weight: bold;
+    }
+    .products-table tr:nth-child(even) {
+      background: #F9F9F9;
+    }
+    .products-table tr:last-child td {
+      border-bottom: none;
+    }
+    .product-name {
+      font-weight: bold;
+      margin-bottom: 2px;
+    }
+    .product-description {
+      font-size: 9pt;
+      color: #666666;
+      font-style: italic;
+    }
+    .quantity {
+      text-align: center;
+      font-weight: bold;
+      min-width: 30px;
+    }
+    
+    /* Footer */
+    .footer {
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid #E5E7EB;
+      font-size: 9pt;
+      color: #6B7280;
+      text-align: center;
+    }
+    
+    /* Print optimization */
+    @media print {
+      .page {
+        page-break-after: always;
+      }
+      .page:last-child {
+        page-break-after: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+<div class="doc">
+<section class="page">
+  <header class="header">
+    <img src="ladp_logo.svg" alt="L'ami du Pain" class="logo"/>
+    <div class="h-title">
+      <div class="t1">{{meta.title}}</div>
+      <div class="t2">L'ami du Pain - La Rochelle</div>
+      <div class="t3">Date opérationnelle : {{meta.selectedDateFormatted}}</div>
+      <div class="t4">Imprimé le : {{meta.printedAtFormatted}}</div>
+    </div>
+  </header>
+
+  <!-- Warning box -->
+  <div class="warning">
+    <div class="warning-title">
+      ⚠️ ATTENTION
+    </div>
+    <div class="warning-text">
+      Cette fiche reflète un instantané des commandes au moment de l'impression.<br>
+      De nouvelles commandes peuvent être ajoutées au système.<br>
+      Consultez régulièrement l'application pour les données à jour.
+    </div>
+  </div>
+
+  <!-- Products table -->
+  <div class="table-container">
+    <table class="products-table">
+      <thead>
+        <tr>
+          <th>Produit</th>
+          {{#meta.deliveryTypes}}
+          <th>{{nom}}</th>
+          {{/meta.deliveryTypes}}
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{#products}}
+        <tr>
+          <td>
+            <div class="product-name">{{produit_nom}}</div>
+            {{#produit_description}}
+            <div class="product-description">{{produit_description}}</div>
+            {{/produit_description}}
+          </td>
+          {{#deliveryValues}}
+          <td class="quantity">{{value}}</td>
+          {{/deliveryValues}}
+          <td class="quantity">{{total_all}}</td>
+        </tr>
+        {{/products}}
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    Document généré le {{meta.printedAtFormatted}} - L'ami du Pain © 2025
+  </div>
+</section>
+</div>
+</body>
+</html>

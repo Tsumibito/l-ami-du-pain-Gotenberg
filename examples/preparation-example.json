@@ -1,0 +1,85 @@
+{
+  "meta": {
+    "title": "Fiche de Préparation des Commandes",
+    "printedAt": "2025-11-03T15:45:00.000Z",
+    "selectedDate": "2025-11-03",
+    "selectedDateFormatted": "dimanche 3 novembre 2025",
+    "sortMode": {
+      "type": "alphabetical"
+    },
+    "deliveryTypes": [
+      {
+        "id": "livraison",
+        "nom": "Livraison",
+        "description": "Livraison standard"
+      },
+      {
+        "id": "emporter", 
+        "nom": "À emporter",
+        "description": "Retrait en magasin"
+      }
+    ]
+  },
+  "products": [
+    {
+      "produit_id": "baguette-trad",
+      "produit_nom": "Baguette tradition",
+      "produit_description": "Baguette de 250g",
+      "total_all": 45,
+      "totals": {
+        "livraison": 30,
+        "emporter": 15
+      }
+    },
+    {
+      "produit_id": "baguette-bio",
+      "produit_nom": "Baguette bio",
+      "produit_description": "Baguette bio 250g",
+      "total_all": 20,
+      "totals": {
+        "livraison": 12,
+        "emporter": 8
+      }
+    },
+    {
+      "produit_id": "pave-campagne",
+      "produit_nom": "Pavé campagne",
+      "produit_description": "Pain de 400g",
+      "total_all": 28,
+      "totals": {
+        "livraison": 20,
+        "emporter": 8
+      }
+    },
+    {
+      "produit_id": "pain-levain",
+      "produit_nom": "Pain au levain",
+      "produit_description": "Pain tradition au levain naturel",
+      "total_all": 20,
+      "totals": {
+        "livraison": 15,
+        "emporter": 5
+      }
+    },
+    {
+      "produit_id": "croissants",
+      "produit_nom": "Croissants au beurre",
+      "produit_description": "Croissants pur beurre",
+      "total_all": 60,
+      "totals": {
+        "livraison": 36,
+        "emporter": 24
+      }
+    },
+    {
+      "produit_id": "pain-chocolat",
+      "produit_nom": "Pains au chocolat",
+      "produit_description": "Pains au chocolat pépites",
+      "total_all": 40,
+      "totals": {
+        "livraison": 25,
+        "emporter": 15
+      }
+    }
+  ]
+}
