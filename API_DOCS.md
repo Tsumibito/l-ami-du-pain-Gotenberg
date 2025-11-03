@@ -111,7 +111,12 @@ Authorization: Bearer your_api_token_here
 | `order.client.nom` ⚠️ | string | Название клиента |
 | `order.client.telephone` | string | Телефон клиента |
 | `order.client.site` | string | Сайт клиента |
-| `order.client_adresse.*` | object | Адрес клиента |
+| `order.client_adresse` | object | Адрес клиента (отображается под именем) |
+| `order.client_adresse.numero_et_nom_de_la_rue` | string | Улица и номер (например: "15 rue du Commerce") |
+| `order.client_adresse.complement_d_adresse` | string | Дополнение к адресу (например: "Bâtiment B") |
+| `order.client_adresse.code_postal` | string | Почтовый индекс (например: "17000") |
+| `order.client_adresse.ville` | string | Город (например: "La Rochelle") |
+| `order.client_adresse.pays` | string | Страна (например: "France") |
 | `order.juridique.*` | object | Юридические данные клиента |
 | `lignes` ⚠️ | array | Массив строк заказа |
 | `lignes[].num` ⚠️ | number | Номер строки |
@@ -124,10 +129,24 @@ Authorization: Bearer your_api_token_here
 - Content-Type: `application/pdf`
 - Body: Binary PDF stream
 
+**Отображение адреса клиента:**
+Адрес отображается под именем клиента в следующем формате:
+```
+Client
+Boulangerie Martin
+15 rue du Commerce
+Bâtiment B
+17000 La Rochelle
+France
+```
+
+Все поля `client_adresse` опциональны - отображаются только заполненные.
+
 **Примечания:**
 - Автоматическая пагинация: 12 строк на первую страницу (если нет `demandes_speciales`), иначе меньше
 - Даты форматируются в таймзоне `Europe/Paris`
 - Если `lignes` больше 12 элементов, документ будет многостраничным
+- В столбце "Tranché" отображается галочка и "Oui" для нарезанных продуктов
 
 ---
 
@@ -162,12 +181,15 @@ Authorization: Bearer your_api_token_here
         },
         "demandes_speciales": "Merci de sonner à l'interphone",
         "client": {
-          "nom": "Boulangerie Martin"
+          "nom": "Boulangerie Martin",
+          "telephone": "+33 5 46 11 22 33"
         },
         "client_adresse": {
           "numero_et_nom_de_la_rue": "12 Rue de la Paix",
+          "complement_d_adresse": "Appartement 3",
           "code_postal": "17000",
-          "ville": "La Rochelle"
+          "ville": "La Rochelle",
+          "pays": "France"
         }
       },
       "lignes": [
@@ -196,15 +218,18 @@ Authorization: Bearer your_api_token_here
         "date_livraison": "2025-01-16",
         "besoin_de_cheque": false,
         "type": {
-          "nom": "Livraison express"
+          "nom": "Livraison express",
+          "description": "Livraison avant 12h"
         },
         "client": {
-          "nom": "Restaurant Le Gourmet"
+          "nom": "Restaurant Le Gourmet",
+          "telephone": "+33 5 46 22 33 44"
         },
         "client_adresse": {
           "numero_et_nom_de_la_rue": "45 Avenue du Port",
           "code_postal": "17000",
-          "ville": "La Rochelle"
+          "ville": "La Rochelle",
+          "pays": "France"
         }
       },
       "lignes": [
