@@ -13,14 +13,15 @@ const templateCache = new Map<string, string>();
  * Load template from file with caching
  */
 async function loadTemplate(templateName: string): Promise<string> {
-  if (templateCache.has(templateName)) {
-    return templateCache.get(templateName)!;
-  }
+  // Temporarily disable cache for development
+  // if (templateCache.has(templateName)) {
+  //   return templateCache.get(templateName)!;
+  // }
   
   const templatePath = path.join(__dirname, '../../templates', templateName);
   const content = await fs.readFile(templatePath, 'utf-8');
   
-  templateCache.set(templateName, content);
+  // templateCache.set(templateName, content);
   return content;
 }
 
