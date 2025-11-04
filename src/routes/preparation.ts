@@ -45,24 +45,38 @@ router.post('/', async (req: Request, res: Response) => {
     
     // Prepare products with computed Maison values
     const preparedProducts = sortedProducts.map(product => {
-      const deliveryValues = meta.deliveryTypes.map((type: any) => ({
-        id: type.id,
-        value: product.totals?.[type.id] || 0,
-        maisonCount: product.details?.[type.id]?.filter((item: any) => item.is_maison)
-          .reduce((sum: number, item: any) => sum + Number(item.quantite || 0), 0) || 0
-      }));
+      const deliveryValues = meta.deliveryTypes.map((type: any) => {
+        const maisonCount = product.details?.[type.id]?.filter((item: any) => item.is_maison)
+          .reduce((sum: number, item: any) => sum + Number(item.quantite || 0), 0) || 0;
+        
+        return {
+          id: type.id,
+          value: product.totals?.[type.id] || 0,
+          maisonCount: maisonCount > 0 ? maisonCount : null
+        };
+      });
       
       return {
         ...product,
         deliveryValues,
-        maisonTotal: product.maison_total || 0
+        maisonTotal: (product.maison_total || 0) > 0 ? product.maison_total : null
       };
     });
     
     // Prepare template data
     const templateData = {
       meta: formattedMeta,
-      products: preparedProducts
+      products: preparedProducts.map(product => ({
+        ...product,
+        // Clean up client details - remove is_maison: false to prevent Maison display
+        details: product.details ? Object.keys(product.details).reduce((acc: any, typeId: string) => {
+          acc[typeId] = product.details[typeId].map((item: any) => ({
+            ...item,
+            is_maison: item.is_maison === true ? true : null // Convert false to null for Mustache
+          }));
+          return acc;
+        }, {}) : null
+      }))
     };
     
     logger.info('Generating preparation PDF', {

@@ -240,18 +240,18 @@
           <td class="quantity">
             <div class="flex-col">
               <span>{{value}}</span>
-              {{#if maisonCount}}
-              <span class="maison-total">dont {{maisonCount}} Maison</span>
-              {{/if}}
+              {{#maisonCount}}
+              <span class="maison-total">dont {{.}} Maison</span>
+              {{/maisonCount}}
             </div>
           </td>
           {{/deliveryValues}}
           <td class="quantity">
             <div class="flex-col">
               <span>{{total_all}}</span>
-              {{#if maisonTotal}}
-              <span class="maison-total">dont {{maisonTotal}} Maison</span>
-              {{/if}}
+              {{#maisonTotal}}
+              <span class="maison-total">dont {{.}} Maison</span>
+              {{/maisonTotal}}
             </div>
           </td>
         </tr>
@@ -263,25 +263,27 @@
           <td style="padding-left: 24px; font-size: 9pt; color: #666;">{{client_nom}}</td>
           {{#each ../../deliveryValues}}
           <td class="quantity" style="font-size: 9pt;">
-            {{#if is_maison}}
+            {{#is_maison}}
             <div class="flex-col">
               <span class="maison-text">{{quantite}}</span>
               <span class="maison-small">Maison</span>
             </div>
-            {{else}}
+            {{/is_maison}}
+            {{^is_maison}}
             <span>{{quantite}}</span>
-            {{/if}}
+            {{/is_maison}}
           </td>
           {{/each}}
           <td class="quantity" style="font-size: 9pt;">
-            {{#if is_maison}}
+            {{#is_maison}}
             <div class="flex-col">
               <span class="maison-text">{{quantite}}</span>
               <span class="maison-small">Maison</span>
             </div>
-            {{else}}
+            {{/is_maison}}
+            {{^is_maison}}
             <span>{{quantite}}</span>
-            {{/if}}
+            {{/is_maison}}
           </td>
         </tr>
         {{/each}}
