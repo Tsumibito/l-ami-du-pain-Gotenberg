@@ -6,9 +6,6 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-// Cache for loaded templates
-const templateCache = new Map<string, string>();
-
 /**
  * Load template from file with caching
  */
