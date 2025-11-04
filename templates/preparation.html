@@ -255,39 +255,6 @@
             </div>
           </td>
         </tr>
-        
-        <!-- Client details for Maison products -->
-        {{#details}}
-        {{#each this}}
-        <tr>
-          <td style="padding-left: 24px; font-size: 9pt; color: #666;">{{client_nom}}</td>
-          {{#each ../../deliveryValues}}
-          <td class="quantity" style="font-size: 9pt;">
-            {{#is_maison}}
-            <div class="flex-col">
-              <span class="maison-text">{{quantite}}</span>
-              <span class="maison-small">Maison</span>
-            </div>
-            {{/is_maison}}
-            {{^is_maison}}
-            <span>{{quantite}}</span>
-            {{/is_maison}}
-          </td>
-          {{/each}}
-          <td class="quantity" style="font-size: 9pt;">
-            {{#is_maison}}
-            <div class="flex-col">
-              <span class="maison-text">{{quantite}}</span>
-              <span class="maison-small">Maison</span>
-            </div>
-            {{/is_maison}}
-            {{^is_maison}}
-            <span>{{quantite}}</span>
-            {{/is_maison}}
-          </td>
-        </tr>
-        {{/each}}
-        {{/details}}
         {{/products}}
       </tbody>
     </table>

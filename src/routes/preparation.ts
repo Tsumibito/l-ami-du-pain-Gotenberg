@@ -66,17 +66,7 @@ router.post('/', async (req: Request, res: Response) => {
     // Prepare template data
     const templateData = {
       meta: formattedMeta,
-      products: preparedProducts.map(product => ({
-        ...product,
-        // Clean up client details - remove is_maison: false to prevent Maison display
-        details: product.details ? Object.keys(product.details).reduce((acc: any, typeId: string) => {
-          acc[typeId] = product.details[typeId].map((item: any) => ({
-            ...item,
-            is_maison: item.is_maison === true ? true : null // Convert false to null for Mustache
-          }));
-          return acc;
-        }, {}) : null
-      }))
+      products: preparedProducts
     };
     
     logger.info('Generating preparation PDF', {
