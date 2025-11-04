@@ -43,16 +43,19 @@ router.post('/', async (req: Request, res: Response) => {
     // Sort products according to sort mode
     const sortedProducts = sortProducts(products, meta.sortMode?.type || 'alphabetical');
     
-    // Prepare products with computed totals for each delivery type
+    // Prepare products with computed Maison values
     const preparedProducts = sortedProducts.map(product => {
       const deliveryValues = meta.deliveryTypes.map((type: any) => ({
         id: type.id,
-        value: product.totals?.[type.id] || 0
+        value: product.totals?.[type.id] || 0,
+        maisonCount: product.details?.[type.id]?.filter((item: any) => item.is_maison)
+          .reduce((sum: number, item: any) => sum + Number(item.quantite || 0), 0) || 0
       }));
       
       return {
         ...product,
-        deliveryValues
+        deliveryValues,
+        maisonTotal: product.maison_total || 0
       };
     });
     

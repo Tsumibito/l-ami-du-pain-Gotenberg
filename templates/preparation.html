@@ -140,6 +140,35 @@
       min-width: 30px;
     }
     
+    /* Maison styles */
+    .maison-text {
+      color: #FB923C;
+      font-weight: 600;
+    }
+    .maison-badge {
+      background-color: #FB923C;
+      color: white;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.8em;
+      font-weight: 600;
+    }
+    .maison-total {
+      color: #FB923C;
+      font-size: 0.9em;
+      margin-top: 2px;
+    }
+    .maison-small {
+      color: #FB923C;
+      font-size: 0.8em;
+      font-weight: normal;
+    }
+    .flex-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    
     /* Footer */
     .footer {
       margin-top: 30px;
@@ -208,10 +237,55 @@
             {{/produit_description}}
           </td>
           {{#deliveryValues}}
-          <td class="quantity">{{value}}</td>
+          <td class="quantity">
+            <div class="flex-col">
+              <span>{{value}}</span>
+              {{#if maisonCount}}
+              <span class="maison-total">dont {{maisonCount}} Maison</span>
+              {{/if}}
+            </div>
+          </td>
           {{/deliveryValues}}
-          <td class="quantity">{{total_all}}</td>
+          <td class="quantity">
+            <div class="flex-col">
+              <span>{{total_all}}</span>
+              {{#if maisonTotal}}
+              <span class="maison-total">dont {{maisonTotal}} Maison</span>
+              {{/if}}
+            </div>
+          </td>
         </tr>
+        
+        <!-- Client details for Maison products -->
+        {{#details}}
+        {{#each this}}
+        <tr>
+          <td style="padding-left: 24px; font-size: 9pt; color: #666;">{{client_nom}}</td>
+          {{#each ../../deliveryValues}}
+          <td class="quantity" style="font-size: 9pt;">
+            {{#if is_maison}}
+            <div class="flex-col">
+              <span class="maison-text">{{quantite}}</span>
+              <span class="maison-small">Maison</span>
+            </div>
+            {{else}}
+            <span>{{quantite}}</span>
+            {{/if}}
+          </td>
+          {{/each}}
+          <td class="quantity" style="font-size: 9pt;">
+            {{#if is_maison}}
+            <div class="flex-col">
+              <span class="maison-text">{{quantite}}</span>
+              <span class="maison-small">Maison</span>
+            </div>
+            {{else}}
+            <span>{{quantite}}</span>
+            {{/if}}
+          </td>
+        </tr>
+        {{/each}}
+        {{/details}}
         {{/products}}
       </tbody>
     </table>
